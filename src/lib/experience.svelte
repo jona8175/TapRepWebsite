@@ -11,23 +11,25 @@
   onMount(() => {
     const canvas = root.querySelector(".webgl");
 
+    
     // Do something with nd, such as adding event listeners, styles, etc.
 
     if (browser) {
-      
-      
+      let width = canvas.getBoundingClientRect().width;
+      let height = canvas.getBoundingClientRect().height;
+
       const renderer = new THREE.WebGLRenderer({
         canvas,
         antialias: true,
       });
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(width, height);
 
 
 
 
       const camera = new THREE.PerspectiveCamera(
         45,
-        window.innerWidth / window.innerHeight,
+        width / height,
         1,
         10000
       );
@@ -55,4 +57,16 @@
   <canvas class="webgl"></canvas>
 </div>
 
-<h1>hey</h1>
+
+
+
+<style>
+  div{
+    width: 100%;
+    height: 100%;
+  }
+  canvas {
+    width: 100%;
+    height: 100%;
+  }
+</style>
