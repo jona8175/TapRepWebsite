@@ -1,5 +1,6 @@
 <!-- Hier wird das menu erstelt was wir across all pages benutzen, 
  an dieser stelle könnten ähnlich dinge gemacht werden-->
+
 <nav>
   <ul>
     <li><a href="/">Welcome</a></li>
@@ -11,10 +12,14 @@
 </nav>
 
 <!-- im slot ist der inhalt der sub-page-->
-<slot></slot>
+<div>
+  <slot></slot>
+</div>
+
 
 <style>
 /* Menu stuff*/
+
 ul {
   list-style-type: none;
   margin: 0;
@@ -53,3 +58,7 @@ li a:hover {
   flex-direction: column;
 }
 </style>
+
+<script>
+  let scene =1;
+</script>

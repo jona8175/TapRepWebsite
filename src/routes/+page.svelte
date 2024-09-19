@@ -97,4 +97,11 @@
     Klimaindikator, an dem man einen klaren Trend ablesen kann. Je wärmer es wird,
     desto höher liegt die Gleichgewichtslinie und desto mehr Eis schmilzt.
   </a>
+
 </div>
+
+
+<script>
+
+  
+</script>

@@ -1,85 +1,77 @@
-<canvas class="webgl"></canvas>
-
-
-
-
-
 <script>
-    
-	import { browser } from '$app/environment'; 
-	import * as THREE from "three"
+  import { browser } from "$app/environment";
+  import * as THREE from "three";
+  import { onMount } from 'svelte';
+  let root;
+  onMount(() => {
+    const canvas = root.querySelector(".webgl");
+    // Do something with nd, such as adding event listeners, styles, etc.
 
-	if(browser) {
-		let camera;
-		let scene;
-		let renderer;
-		let cube;
+    if (browser) {
 
-		const init = () => {
-			scene = new THREE.Scene();
-			camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
 
-			renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+      });
 
-			const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-			const material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
-			cube = new THREE.Mesh( geometry, material );
-			scene.add( cube );
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setAnimationLoop(animate);
 
-			camera.position.z = 5;
-		}
+      const geometry = new THREE.BoxGeometry(1, 1, 1);
+      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const cube = new THREE.Mesh(geometry, material);
+      scene.add(cube);
 
-		const render = () => {
-			renderer.clear()
-			renderer.render(scene, camera);
-		}
+      camera.position.z = 5;
 
-		const animate = () => {
-			requestAnimationFrame(animate)
+      function animate() {
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
 
-			cube.rotation.x += 0.005
-			cube.rotation.y += 0.005
-
-			render()
-		}
-
-		init()
-		animate()
-	}
+        renderer.render(scene, camera);
+      }
+    }
+  });
 </script>
+<div bind:this={root}>
+    <canvas class= "webgl"></canvas>
+</div>
 
 
 <style>
-
-.webgl
-{
-    position: static;
+  .webgl {
+    position: relative;
     top: 0;
     left: 0;
     outline: none;
-    height: 10%;
+    height: 100%;
+    width: 100%;
+    /*height: 10%;*/
+  }
 
-}
-
-.point
-{
+  .point {
     position: absolute;
     top: 50%;
     left: 50%;
     /* pointer-events: none; */
-}
+  }
 
-.point .label
-{
+  .point .label {
     position: absolute;
     top: 60px;
     left: -20px;
     /*width: 40px;*/
     /*height: 40px;*/
     padding-top: 0px;
-    padding-left:  5px;
+    padding-left: 5px;
     padding-right: 5px;
     padding-bottom: -1px;
     border-radius: 4px;
@@ -94,10 +86,9 @@
     cursor: help;
     transform: scale(0, 0);
     transition: transform 0.5s;
-}
+  }
 
-.point .text
-{
+  .point .text {
     position: absolute;
     top: 95px;
     left: -120px;
@@ -114,18 +105,13 @@
     opacity: 0;
     transition: opacity 0.8s;
     pointer-events: none;
-}
+  }
 
-.point:hover .text
-{
+  .point:hover .text {
     opacity: 1;
-}
+  }
 
-.point.visible .label
-{
+  .point.visible .label {
     transform: scale(1, 1);
-}
-
- 
-
+  }
 </style>
