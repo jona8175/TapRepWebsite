@@ -182,6 +182,18 @@
         window.requestAnimationFrame(tick);
       };
       tick();
+      
+      /*function closeVideo() {
+        var element = document.getElementById("PopUp");
+        element.classList.remove("active");
+        document.getElementById("iframeVid").src = "https://www.google.ch";
+      }
+
+      function summonVideo(link) {
+        var element = document.getElementById("PopUp");
+        element.classList.add("active");
+        document.getElementById("iframeVid").src = link;
+      }*/
     }
   });
 </script>
@@ -190,11 +202,15 @@
   <body>
     <canvas class="webgl"></canvas>
     <div class="point point-0">
-      <div class="label" onclick="summonVideo('https://www.youtube.com/embed/64R2MYUt394')">Sander</div>
+      <div
+        class="label"
+      >
+        Sander
+      </div>
       <div class="text">Im Gletschervorfeld.</div>
     </div>
     <div class="point point-1">
-      <div class="label" >UferMoräne</div>
+      <div class="label">UferMoräne</div>
       <div class="text">
         Sie war seitlich vom Gletscher und besteht aus erosions Material vom
         Gletscher und den angrenzenden Berghängen. Nach dem Abschmelzen des
@@ -202,39 +218,28 @@
       </div>
     </div>
     <div class="point point-2">
-      <div class="label" onclick="summonVideo('https://www.youtube.com/embed/nkYBTNbHPnY')">See</div>
+      <div
+        class="label"
+      >
+        See
+      </div>
       <div class="text">Durch die Moräne angestaut.</div>
     </div>
     <div class="point point-3">
-      <div class="label" onclick="summonVideo('https://www.youtube.com/embed/QXowmQ2J7wo')">Gletscher</div>
+      <div
+        class="label">
+        Gletscher
+      </div>
       <div class="text">Zusatz Text.</div>
     </div>
 
-    <!-- pop up-->
-    <div id = "PopUp" class = "PopUp active youtube-player-popup">
+    <!-- pop up
+    <div id="PopUp" class="PopUp active youtube-player-popup">
       <button onclick="closeVideo()">Close</button>
-      <iframe
-        id= "iframeVid"
-        src="https://www.youtube.com/embed/64R2MYUt394">
+      <iframe id="iframeVid" src="https://www.youtube.com/embed/64R2MYUt394">
       </iframe>
     </div>
-
-    <!-- pop up script-->
-    <script>
-
-      function closeVideo() {
-        var element = document.getElementById("PopUp");
-        element.classList.remove("active");
-        document.getElementById("iframeVid").src = "https://www.google.ch";     
-      }
-      
-      function summonVideo(link){
-        var element = document.getElementById("PopUp");
-        element.classList.add("active");
-        document.getElementById("iframeVid").src = link;
-      }
-    </script>
-
+    -->
   </body>
 </div>
 
@@ -271,13 +276,13 @@
     opacity: 1;
   }
 
-  .PopUp{
+  /*.PopUp {
     position: absolute;
     background-color: blueviolet;
     top: 20%;
     left: 20%;
     width: 60%;
-    height: 60%;;
+    height: 60%;
     z-index: -20;
     opacity: 0;
     pointer-events: none;
@@ -286,13 +291,12 @@
     opacity: 1;
     pointer-events: auto;
     z-index: 30;
-
   }
-  iframe{
+  iframe {
     display: block;
     width: 100%;
     height: 100%;
     margin-left: auto;
     margin-right: auto;
-  }
+  }*/
 </style>
