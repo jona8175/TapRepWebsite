@@ -74,6 +74,29 @@
         0.1,
         1000
       );
+
+      /**
+       * Points of interest
+       */
+      const raycaster = new THREE.Raycaster();
+      const points = [
+        {
+          position: new THREE.Vector3(0.05, 0.15, 0.45),
+          element: document.querySelector(".point-0"),
+        },
+        {
+          position: new THREE.Vector3(-0.25, 0.33, 0.4),
+          element: document.querySelector(".point-1"),
+        },
+        {
+          position: new THREE.Vector3(-0.37, 0.3, 0.05),
+          element: document.querySelector(".point-2"),
+        },
+        {
+          position: new THREE.Vector3(0.05, 0.35, -0.3),
+          element: document.querySelector(".point-3"),
+        },
+      ];
       /**
        * Lights
        */
@@ -106,7 +129,6 @@
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
       renderer.setSize(window.innerWidth, window.innerHeight);
-      
 
       /**
        * Sizes
@@ -134,33 +156,100 @@
       camera.position.z = 5;
 
       const tick = () => {
-        controls.update()
-        console.log("hey")
-        if (true) {
-          // TODO: Implement points and Loading
-        }
-        renderer.render(scene, camera)
-        window.requestAnimationFrame(tick)
-      };
-      tick()
+        controls.update();
 
+        for (const point of points) {
+          console.log(point);
+
+          // Get 2D screen position
+          const screenPosition = point.position.clone();
+          screenPosition.project(camera);
+
+          // Set the raycaster
+          raycaster.setFromCamera(screenPosition, camera);
+          const intersects = raycaster.intersectObjects(scene.children, true);
+
+          point.element.classList.add("visible"); //add this and comment out the if else so tags allways show
+
+          const translateX = screenPosition.x * sizes.width * 0.5;
+          const translateY = -screenPosition.y * sizes.height * 0.5;
+          point.element.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`;
+        }
+
+        // TODO: Implement points and Loading
+
+        renderer.render(scene, camera);
+        window.requestAnimationFrame(tick);
+      };
+      tick();
     }
   });
 </script>
 
-<div bind:this={root}>
-  <canvas class="webgl"></canvas>
+<div bind:this={root} class="bind-div">
+  <body>
+    <canvas class="webgl"></canvas>
+    <div class="point point-0">
+      <div class="label" onclick="summonVideo('https://www.youtube.com/embed/64R2MYUt394')">Sander</div>
+      <div class="text">Im Gletschervorfeld.</div>
+    </div>
+    <div class="point point-1">
+      <div class="label" >UferMoräne</div>
+      <div class="text">
+        Sie war seitlich vom Gletscher und besteht aus erosions Material vom
+        Gletscher und den angrenzenden Berghängen. Nach dem Abschmelzen des
+        Gletschers ebleibt ein Wall am Hangfuß des Tals.
+      </div>
+    </div>
+    <div class="point point-2">
+      <div class="label" onclick="summonVideo('https://www.youtube.com/embed/nkYBTNbHPnY')">See</div>
+      <div class="text">Durch die Moräne angestaut.</div>
+    </div>
+    <div class="point point-3">
+      <div class="label" onclick="summonVideo('https://www.youtube.com/embed/QXowmQ2J7wo')">Gletscher</div>
+      <div class="text">Zusatz Text.</div>
+    </div>
+
+    <!-- pop up-->
+    <div id = "PopUp" class = "PopUp active youtube-player-popup">
+      <button onclick="closeVideo()">Close</button>
+      <iframe
+        id= "iframeVid"
+        src="https://www.youtube.com/embed/64R2MYUt394">
+      </iframe>
+    </div>
+
+    <!-- pop up script-->
+    <script>
+
+      function closeVideo() {
+        var element = document.getElementById("PopUp");
+        element.classList.remove("active");
+        document.getElementById("iframeVid").src = "https://www.google.ch";     
+      }
+      
+      function summonVideo(link){
+        var element = document.getElementById("PopUp");
+        element.classList.add("active");
+        document.getElementById("iframeVid").src = link;
+      }
+    </script>
+
+  </body>
 </div>
 
 <style>
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
   .webgl {
-    position: relative;
+    position: static;
     top: 0;
     left: 0;
     outline: none;
+    z-index: -10;
     height: 100%;
-    width: 100%;
-    /*height: 10%;*/
   }
 
   .point {
@@ -168,56 +257,42 @@
     top: 50%;
     left: 50%;
     /* pointer-events: none; */
+    z-index: 10;
   }
 
   .point .label {
-    position: absolute;
-    top: 60px;
-    left: -20px;
-    /*width: 40px;*/
-    /*height: 40px;*/
-    padding-top: 0px;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-bottom: -1px;
-    border-radius: 4px;
-    background: #d0c4c4df;
-    border: 1px solid #ffffff77;
-    color: #000000;
-    font-family: Helvetica, Arial, sans-serif;
-    text-align: center;
-    line-height: 20px;
-    font-weight: 100;
-    font-size: 12px;
-    cursor: help;
-    transform: scale(0, 0);
-    transition: transform 0.5s;
   }
 
   .point .text {
-    position: absolute;
-    top: 95px;
-    left: -120px;
-    width: 200px;
-    padding: 20px;
-    border-radius: 4px;
-    background: #dbdbdbe7;
-    border: 1px solid #ffffffbe;
-    color: #000000;
-    line-height: 1.3em;
-    font-family: Helvetica, Arial, sans-serif;
-    font-weight: 100;
-    font-size: 14px;
     opacity: 0;
-    transition: opacity 0.8s;
-    pointer-events: none;
   }
 
   .point:hover .text {
     opacity: 1;
   }
 
-  .point.visible .label {
-    transform: scale(1, 1);
+  .PopUp{
+    position: absolute;
+    background-color: blueviolet;
+    top: 20%;
+    left: 20%;
+    width: 60%;
+    height: 60%;;
+    z-index: -20;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .PopUp.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 30;
+
+  }
+  iframe{
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
   }
 </style>
